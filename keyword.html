@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Keyword & Result Manager</title>
+  <meta charset="UTF-8" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background: #111;
+      color: #fff;
+      max-width: 900px;
+      margin: auto;
+    }
+
+    h2 {
+      border-bottom: 2px solid #ff0077;
+      padding-bottom: 5px;
+      margin-top: 40px;
+    }
+
+    textarea {
+      width: 100%;
+      height: 100px;
+      background: #222;
+      border: none;
+      border-radius: 5px;
+      color: #fff;
+      padding: 10px;
+      font-size: 1rem;
+      resize: vertical;
+    }
+
+    button {
+      margin: 10px 5px 10px 0;
+      padding: 10px 20px;
+      background: #ff0077;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background: #e6006e;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin-top: 10px;
+      max-height: 300px;
+      overflow-y: auto;
+      border: 1px solid #444;
+      border-radius: 5px;
+      background: #222;
+    }
+
+    li {
+      margin: 5px 0;
+      padding: 10px;
+      background: #222;
+      border-radius: 5px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.3s ease;
+    }
+
+    li.selected {
+      background: #550055;
+    }
+
+    .container {
+      margin-bottom: 40px;
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="container" id="keywordSection">
+    <h2>Paste Keywords Below:</h2>
+    <textarea id="keywordInput" placeholder="Enter keywords here, one per line..."></textarea><br>
+    <button onclick="saveKeywords()">Save Keywords</button>
+    <button onclick="deleteSelectedKeywords()">Delete Selected</button>
+    <button onclick="selectAllKeywords()">Select All</button>
+
+    <h3>Saved Keywords:</h3>
+    <ul id="keywordList"></ul>
+  </div>
+
+  <div class="container" id="resultSection">
+    <h2>Paste Results Below:</h2>
+    <textarea id="resultInput" placeholder="Enter results here, one per line..."></textarea><br>
+    <button onclick="saveResults()">Save Results</button>
+    <button onclick="deleteSelectedResults()">Delete Selected</button>
+    <button onclick="selectAllResults()">Select All</button>
+
+    <h3>Saved Results:</h3>
+    <ul id="resultList"></ul>
+  </div>
+
+  <!-- Firebase JS -->
+  <script type="module" src="keyword.js"></script>
+</body>
+</html>

@@ -1,0 +1,112 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DailyDose.site</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <h1>🔆 Today’s Quick Dose</h1>
+      <p>Your daily feel-good, fun & focus station</p>
+      <button id="toggleTheme">🌓 Toggle Theme</button>
+    </header>
+
+    <section class="weather card">
+      <h2>🌤️ Weather</h2>
+      <div class="weather-inputs">
+        <input type="text" id="cityInput" placeholder="Enter city" />
+        <button id="getWeather">Get Weather</button>
+      </div>
+      <p id="weatherResult">Loading weather...</p>
+    </section>
+
+    <section class="card">
+      <h2>🧠 Quote of the Day</h2>
+      <blockquote id="quoteText">Loading quote...</blockquote>
+    </section>
+
+    <section class="card">
+      <h2>😂 Joke of the Day</h2>
+      <p id="jokeText">Loading joke...</p>
+    </section>
+
+    <section class="card">
+      <h2>📚 Word of the Day</h2>
+      <p>
+        <strong>Word:</strong> <span id="wordText">Loading...</span><br>
+        <strong>Meaning:</strong> <span id="defText">Loading...</span>
+      </p>
+    </section>
+
+    <section class="card" id="riddleCard">
+      <h2>🎭 Riddle of the Day</h2>
+      <p id="riddleQuestion">Loading riddle...</p>
+      <button id="riddleBtn" class="reveal-btn">Reveal Answer 🔽</button>
+      <p id="riddleAnswer" style="display:none;">Loading answer...</p>
+    </section>
+
+    <section class="card">
+      <h2>🔥 Trending Reddit Post</h2>
+      <p id="redditText">Loading post...</p>
+      <a id="redditLink" href="#" target="_blank" class="btn">Read More ➜</a>
+    </section>
+
+    <section class="card">
+      <h2>🎉 Fun Fact</h2>
+      <p id="factText">Loading fun fact...</p>
+    </section>
+
+    <section class="card" id="keywordResults">
+      <h2>🔎 Keyword Data & Insights</h2>
+
+      <!-- Injected static HTML from Firebase data -->
+      <article class="keyword-block">
+        <h3>Keyword: weather today</h3>
+
+        <section class="api-result">
+          <h4>Reddit Posts</h4>
+          <ul>
+            <li><a href="https://reddit.com/r/example1" target="_blank" rel="noopener">Post title 1</a></li>
+            <li><a href="https://reddit.com/r/example2" target="_blank" rel="noopener">Post title 2</a></li>
+          </ul>
+        </section>
+
+        <section class="api-result">
+          <h4>Wikipedia Summary</h4>
+          <p><strong>Title:</strong> Weather Today</p>
+          <p>A brief extract or summary from Wikipedia...</p>
+          <p><a href="https://en.wikipedia.org/wiki/Weather_today" target="_blank" rel="noopener">Read more on Wikipedia</a></p>
+        </section>
+      </article>
+
+      <article class="keyword-block">
+        <h3>Keyword: bitcoin price</h3>
+        <section class="api-result">
+          <h4>Reddit Posts</h4>
+          <ul>
+            <li><a href="https://reddit.com/r/example3" target="_blank" rel="noopener">Post title 1</a></li>
+            <li><a href="https://reddit.com/r/example4" target="_blank" rel="noopener">Post title 2</a></li>
+          </ul>
+        </section>
+        <section class="api-result">
+          <h4>Wikipedia Summary</h4>
+          <p><strong>Title:</strong> Bitcoin</p>
+          <p>A summary about Bitcoin's price and history...</p>
+          <p><a href="https://en.wikipedia.org/wiki/Bitcoin" target="_blank" rel="noopener">Read more on Wikipedia</a></p>
+        </section>
+      </article>
+    </section>
+
+    <footer>
+      © 2025 DailyDose.site | Made with ❤️ in Bhutan
+    </footer>
+  </div>
+</body>
+</html>

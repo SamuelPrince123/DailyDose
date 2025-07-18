@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>DailyDose.site</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap&family=Poppins:wght@600&display=swap" rel="stylesheet" />
+</head>
+
+<body class="blue">
+
+  <header class="header">
+    <h1>🔆 Today’s Quick Dose</h1>
+    <p>Your daily feel-good, fun & focus station</p>
+    <!-- 🔄 Theme Selector -->
+  <select id="themeSelector">
+  <option value="">🌞 Light</option>
+  <option value="dark">🌙 Dark</option>
+  <option value="pink">🌸 Pink</option>
+  <option value="blue" selected>🔵 Blue</option> <!-- This makes blue default -->
+  <option value="high-contrast">⚡ High Contrast</option>
+</select>
+
+    <div id="digital-clock">
+      <span id="hour">--</span><span class="colon">:</span>
+      <span id="minute">--</span><span class="colon">:</span>
+      <span id="second">--</span>
+      <span id="ampm">--</span>
+    </div>
+  </header>
+
+  <section class="weather card">
+    <h2>🌤️ Weather</h2>
+    <div class="weather-inputs">
+      <input type="text" id="cityInput" placeholder="Enter city" />
+      <button id="getWeather">Get Weather</button>
+    </div>
+    <p id="weatherResult">Global Weather</p>
+  </section>
+
+  <section class="card">
+    <h2>🧠 Quote of the Day</h2>
+    <blockquote id="quoteText">Loading quote...</blockquote>
+  </section>
+
+  <section class="card">
+    <h2>😂 Joke of the Day</h2>
+    <p id="jokeText">Loading joke...</p>
+  </section>
+
+  <section class="card">
+    <h2>📚 Word of the Day</h2>
+    <p>
+      <strong>Word:</strong> <span id="wordText">Loading...</span><br />
+      <strong>Meaning:</strong> <span id="defText">Loading...</span>
+    </p>
+  </section>
+
+  <section class="card" id="riddleCard">
+    <h2>🎭 Riddle of the Day</h2>
+    <p id="riddleQuestion">Loading riddle...</p>
+    <button id="riddleBtn" class="reveal-btn">Reveal Answer 🔽</button>
+    <p id="riddleAnswer" style="display:none;">Loading answer...</p>
+  </section>
+
+  <section class="card">
+    <h2>🔥 Trending Reddit Post</h2>
+    <p id="redditText">Loading post...</p>
+    <a id="redditLink" href="#" target="_blank" class="btn">Read More ➜</a>
+  </section>
+
+  <section class="card">
+    <h2>🎉 Fun Fact</h2>
+    <p id="factText">Loading fun fact...</p>
+  </section>
+
+  <h1>Keyword Search</h1>
+  <input type="text" id="searchInput" placeholder="🔍 Search keywords or content..." />
+  <section id="content">Loading content...</section>
+
+  <footer>
+    © 2025 DailyDose.site | Made with ❤️ in Bhutan
+  </footer>
+
+  <!-- Load JS files in order -->
+  <script src="app.js"></script>
+  <script src="app1.js"></script>
+  <script src="app2.js"></script>
+</body>
+</html>

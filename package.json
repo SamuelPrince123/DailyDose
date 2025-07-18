@@ -1,0 +1,18 @@
+{
+  "dependencies": {
+    "firebase": "^12.0.0",
+    "firebase-admin": "^13.4.0",
+    "fs-extra": "^11.3.0",
+    "node-fetch": "^3.3.2"
+  },
+  "name": "google-ads",
+  "version": "1.0.0",
+  "main": "keyword.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
