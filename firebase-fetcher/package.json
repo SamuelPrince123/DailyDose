@@ -1,7 +1,8 @@
 {
   "name": "firebase-fetcher",
   "version": "1.0.0",
-  "type": "module",
+   "type": "module",
+  "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -11,9 +12,6 @@
   "license": "ISC",
   "dependencies": {
     "axios": "^1.10.0",
-    "firebase-admin": "^13.4.0",
-    "fs-extra": "^11.3.0",
-    "node-fetch": "^3.3.2"
-  },
-  "description": ""
+    "firebase-admin": "^13.4.0"
+  }
 }

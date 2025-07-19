@@ -2,39 +2,23 @@
 window.addEventListener("DOMContentLoaded", () => {
   // THEME SELECTOR SETUP
   const themeSelector = document.getElementById("themeSelector");
-  const savedTheme = localStorage.getItem("theme") || "";
-  document.body.className = savedTheme;
+  const savedTheme = localStorage.getItem("theme") || "blue"; // default to blue if none saved
+
+  // Apply saved or default theme to body and selector
+  document.body.className = ""; // clear existing classes
+  document.body.classList.add(savedTheme);
   themeSelector.value = savedTheme;
 
   themeSelector.addEventListener("change", () => {
-    const theme = themeSelector.value;
-    document.body.className = theme;
+    const theme = themeSelector.value || "blue"; // fallback to blue
+    document.body.className = ""; // clear all classes
+    document.body.classList.add(theme);
     localStorage.setItem("theme", theme);
-    // We call updateKeywordTheme from app.js but since scripts run sequentially,
-    // we need to ensure updateKeywordTheme is available globally
+
+    // Call updateKeywordTheme if exists globally
     if (typeof updateKeywordTheme === "function") {
       updateKeywordTheme();
     }
-  });
-
-  window.addEventListener("DOMContentLoaded", () => {
-    const themeSelector = document.getElementById("themeSelector");
-
-    // Apply default theme class from selected option
-    document.body.className = ""; // remove existing
-    const selectedTheme = themeSelector.value;
-    if (selectedTheme) {
-      document.body.classList.add(selectedTheme);
-    }
-
-    // Handle user changes to theme
-    themeSelector.addEventListener("change", () => {
-      document.body.className = ""; // clear all
-      const theme = themeSelector.value;
-      if (theme) {
-        document.body.classList.add(theme);
-      }
-    });
   });
 
   // WEATHER FEATURE
