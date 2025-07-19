@@ -7,7 +7,7 @@ let counter = 0;
 
 function tick() {
   const now = new Date();
-  const opts = { hour12: true, timeZone: "America/Los_Angeles" };
+  const opts = { hour12: true, timeZone: "Asia/Thimphu" };
 
   const parts = now
     .toLocaleTimeString("en-US", {
