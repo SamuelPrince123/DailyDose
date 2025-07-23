@@ -1,4 +1,10 @@
 /* Reset & base */
+
+/* Prevent any horizontal overflow (blank space) */
+html, body {
+  overflow-x: hidden;
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
