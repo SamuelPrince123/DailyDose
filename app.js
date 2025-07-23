@@ -57,8 +57,10 @@ function updateKeywordTheme() {
     pink: { bg: "#ffe4ec", text: "#52002d", h3: "#d63384", h4: "#880044" },
     blue: { bg: "#e3f2fd", text: "#003c8f", h3: "#1565c0", h4: "#1976d2" },
     "high-contrast": { bg: "#000", text: "#fff", h3: "#ff0", h4: "#0ff" },
-    "": { bg: "#fff", text: "#333", h3: "#222", h4: "#555" },
+    light: { bg: "#fff", text: "#333", h3: "#222", h4: "#555" },
+    "": { bg: "#fff", text: "#333", h3: "#222", h4: "#555" }, // optional fallback
   };
+
   const current = themes[bodyClass] || themes[""];
   document.querySelectorAll(".keyword-block").forEach((block) => {
     block.style.background = current.bg;
@@ -70,6 +72,18 @@ function updateKeywordTheme() {
   document.querySelectorAll(".api-result h4").forEach((h) => {
     h.style.color = current.h4;
   });
+
+  // Update digital clock label text + outline based on theme
+  const clockLabel = document.getElementById("clock-label");
+  if (clockLabel) {
+    clockLabel.style.color = current.text;
+    clockLabel.style.textShadow = `
+      -1px -1px 0 ${current.h4},
+       1px -1px 0 ${current.h4},
+      -1px  1px 0 ${current.h4},
+       1px  1px 0 ${current.h4}
+    `;
+  }
 }
 
 function filterContent(query) {

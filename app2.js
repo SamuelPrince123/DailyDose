@@ -22,7 +22,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
-const CACHE_TTL = 12 * 60 * 60 * 1000; // 12 hours  12 * 60 * 60 * 1000
+const CACHE_TTL = 24 * 60 * 60 * 1000; // 24 hours
 
 window.addEventListener("DOMContentLoaded", () => {
   loadDailyData();
@@ -52,36 +52,68 @@ async function loadDailyData() {
   }
 }
 
+async function fetchWithRetry(fetchFn, description) {
+  try {
+    return await fetchFn();
+  } catch (err) {
+    console.warn(`⚠️ Error fetching ${description}, retrying…`, err);
+    // retry once
+    try {
+      return await fetchFn();
+    } catch (err2) {
+      console.error(`❌ Retry failed for ${description}`, err2);
+      throw err2;
+    }
+  }
+}
+
 async function fetchDailyDataFromApis() {
   const freshData = {};
 
+  // Quote
   try {
-    const qr = await fetch("https://api.api-ninjas.com/v1/quotes", {
-      headers: { "X-Api-Key": "KtnWtR5dGlw3+74D7grQYg==mzMWCWQ2Raih3DkU" },
-    });
-    const qd = await qr.json();
+    const qd = await fetchWithRetry(
+      () =>
+        fetch("https://api.api-ninjas.com/v1/quotes", {
+          headers: { "X-Api-Key": "KtnWtR5dGlw3+74D7grQYg==mzMWCWQ2Raih3DkU" },
+        }).then((r) => r.json()),
+      "quote of the day"
+    );
     freshData.quote = `"${qd[0].quote}" — ${qd[0].author}`;
-  } catch (e) {
+  } catch {
     freshData.quote = "Couldn't load quote.";
   }
 
+  // Joke
   try {
-    const jr = await fetch("https://official-joke-api.appspot.com/random_joke");
-    const jd = await jr.json();
+    const jd = await fetchWithRetry(
+      () =>
+        fetch("https://official-joke-api.appspot.com/random_joke").then((r) =>
+          r.json()
+        ),
+      "joke"
+    );
     freshData.joke = `${jd.setup} ${jd.punchline}`;
   } catch {
     freshData.joke = "Couldn't load joke.";
   }
 
+  // Word + Definition
   try {
-    const wr = await fetch(
-      "https://random-word-api.herokuapp.com/word?number=1"
+    const [w] = await fetchWithRetry(
+      () =>
+        fetch("https://random-word-api.herokuapp.com/word?number=1").then((r) =>
+          r.json()
+        ),
+      "word of the day"
     );
-    const [w] = await wr.json();
-    const dr = await fetch(
-      `https://api.dictionaryapi.dev/api/v2/entries/en/${w}`
+    const dd = await fetchWithRetry(
+      () =>
+        fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${w}`).then(
+          (r) => r.json()
+        ),
+      `definition for ${w}`
     );
-    const dd = await dr.json();
     freshData.word = w;
     freshData.definition = dd[0].meanings[0].definitions[0].definition;
   } catch {
@@ -89,12 +121,16 @@ async function fetchDailyDataFromApis() {
     freshData.definition = "Definition not found.";
   }
 
+  // Reddit post
   try {
-    const redditUrl = "https://www.reddit.com/r/popular/hot.json?limit=10";
-    const proxyUrl = "https://corsproxy.io/?" + encodeURIComponent(redditUrl);
-    const rr = await fetch(proxyUrl);
-    const rd = await rr.json();
-    const post = rd.data.children[Math.floor(Math.random() * 10)].data;
+    const rd = await fetchWithRetry(() => {
+      const redditUrl = "https://www.reddit.com/r/popular/hot.json?limit=10";
+      const proxyUrl = "https://corsproxy.io/?" + encodeURIComponent(redditUrl);
+      return fetch(proxyUrl).then((r) => r.json());
+    }, "Reddit post");
+    const post =
+      rd.data.children[Math.floor(Math.random() * rd.data.children.length)]
+        .data;
     freshData.redditTitle = post.title;
     freshData.redditUrl = "https://reddit.com" + post.permalink;
   } catch {
@@ -102,19 +138,27 @@ async function fetchDailyDataFromApis() {
     freshData.redditUrl = "#";
   }
 
+  // Fun Fact
   try {
-    const fr = await fetch(
-      "https://uselessfacts.jsph.pl/random.json?language=en"
+    const fd = await fetchWithRetry(
+      () =>
+        fetch("https://uselessfacts.jsph.pl/random.json?language=en").then(
+          (r) => r.json()
+        ),
+      "fun fact"
     );
-    const fd = await fr.json();
     freshData.funFact = fd.text;
   } catch {
     freshData.funFact = "Couldn't load fun fact.";
   }
 
+  // Riddle
   try {
-    const rr2 = await fetch("https://riddles-api.vercel.app/random");
-    const rd2 = await rr2.json();
+    const rd2 = await fetchWithRetry(
+      () =>
+        fetch("https://riddles-api.vercel.app/random").then((r) => r.json()),
+      "riddle"
+    );
     freshData.riddleQuestion = rd2.riddle;
     freshData.riddleAnswer = rd2.answer;
   } catch {
