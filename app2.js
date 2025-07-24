@@ -1,5 +1,4 @@
 // Firebase SDK v9+ (modular)
-// Add your own Firebase config here:
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
 import {
   getDatabase,
@@ -36,12 +35,37 @@ async function loadDailyData() {
     const data = snapshot.val();
     const now = Date.now();
 
+    let freshData = { ...(data || {}) };
+
     if (data && data.lastFetch && now - data.lastFetch < CACHE_TTL) {
       console.log("✅ Loaded from Firebase cache");
-      displayData(data);
+
+      // If specific section failed before, try fetching it again:
+      const updateSections = [];
+
+      if (
+        data.word === "error" ||
+        data.definition === "Definition not found."
+      ) {
+        console.log("🔄 Retrying Word of the Day...");
+        updateSections.push(fetchWordSection());
+      }
+
+      // Add other retryable checks here if needed
+
+      if (updateSections.length > 0) {
+        const updates = await Promise.all(updateSections);
+        for (const partial of updates) {
+          Object.assign(freshData, partial);
+        }
+        await set(dbRef, freshData);
+        console.log("✅ Updated failed sections only");
+      }
+
+      displayData(freshData);
     } else {
-      console.log("🔄 Fetching fresh data from APIs...");
-      const freshData = await fetchDailyDataFromApis();
+      console.log("🔄 Fetching fresh data from all APIs...");
+      freshData = await fetchDailyDataFromApis();
       freshData.lastFetch = now;
       await set(dbRef, freshData);
       console.log("✅ Saved new data to Firebase");
@@ -57,7 +81,6 @@ async function fetchWithRetry(fetchFn, description) {
     return await fetchFn();
   } catch (err) {
     console.warn(`⚠️ Error fetching ${description}, retrying…`, err);
-    // retry once
     try {
       return await fetchFn();
     } catch (err2) {
@@ -99,27 +122,7 @@ async function fetchDailyDataFromApis() {
   }
 
   // Word + Definition
-  try {
-    const [w] = await fetchWithRetry(
-      () =>
-        fetch("https://random-word-api.herokuapp.com/word?number=1").then((r) =>
-          r.json()
-        ),
-      "word of the day"
-    );
-    const dd = await fetchWithRetry(
-      () =>
-        fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${w}`).then(
-          (r) => r.json()
-        ),
-      `definition for ${w}`
-    );
-    freshData.word = w;
-    freshData.definition = dd[0].meanings[0].definitions[0].definition;
-  } catch {
-    freshData.word = "error";
-    freshData.definition = "Definition not found.";
-  }
+  Object.assign(freshData, await fetchWordSection());
 
   // Reddit post
   try {
@@ -167,6 +170,40 @@ async function fetchDailyDataFromApis() {
   }
 
   return freshData;
+}
+
+async function fetchWordSection() {
+  const wordData = {};
+  try {
+    const [w] = await fetchWithRetry(
+      () =>
+        fetch("https://random-word-api.herokuapp.com/word?number=1").then((r) =>
+          r.json()
+        ),
+      "word of the day"
+    );
+
+    const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(
+      `https://api.dictionaryapi.dev/api/v2/entries/en/${w}`
+    )}`;
+
+    const dd = await fetchWithRetry(
+      () =>
+        fetch(proxyUrl)
+          .then((r) => r.json())
+          .then((d) => JSON.parse(d.contents)),
+      `definition for ${w}`
+    );
+
+    wordData.word = w;
+    wordData.definition =
+      dd[0]?.meanings?.[0]?.definitions?.[0]?.definition ||
+      "Definition not found.";
+  } catch {
+    wordData.word = "error";
+    wordData.definition = "Definition not found.";
+  }
+  return wordData;
 }
 
 function displayData(data) {
