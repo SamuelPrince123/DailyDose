@@ -60,7 +60,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <option value="high-contrast">⚡ High Contrast</option>
 </select>
 
-  <div id="digital-clock-container">
+   <div id="digital-clock-container">
     <div id="digital-clock">
       <span id="hour">--</span><span class="colon">:</span>
       <span id="minute">--</span><span class="colon">:</span>
@@ -68,8 +68,47 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <span id="ampm">--</span>
     </div>
     <div id="clock-label"> South Asia Time</div>
-  </div>
+  </div> 
 </header>
+
+
+
+
+
+  <section class="card" id="photoSection">
+  <h2>🖼️ Photo of the Day</h2>
+  <div style="position: relative; padding-top: 56.25%; background: #f0f0f0; border-radius: 10px; overflow: hidden;">
+  
+    <span id="photoPlaceholder" style="
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      color: #999; font-size: 1rem;
+    ">
+      Loading image...
+    </span>
+    <img
+      id="photoImage"
+      src=""
+      alt="Photo of the Day"
+      style="
+        position: absolute; top: 0; left: 0;
+        width: 100%; height: 100%;
+        object-fit: cover;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        opacity: 0;
+        transition: opacity 0.5s ease-in-out;
+      "
+      onload="this.style.opacity='1'; document.getElementById('photoPlaceholder').style.display='none';"
+    />
+  </div>
+  <p id="photoCredit" style="font-size: 0.85em; color: #666; margin-top: 0.5rem;">
+    Photo via Picsum
+  </p>
+</section>  
+
+
+
 
 
 
@@ -108,6 +147,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <h2>🎉 Fun Fact</h2>
     <p id="factText">Loading fun fact...</p>
   </section>
+    <section class="card">
+  <h2>✍️ Story Starter</h2>
+  <p id="creativityText">Loading story starter...</p>
+</section>
 
    <section class="weather card">
     <h2>🌤️ Weather</h2>
@@ -117,6 +160,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
     <p id="weatherResult">Global Weather</p>
   </section>
+
+
+
 
   <h1>Keyword Search</h1>
   <input type="text" id="searchInput" placeholder="🔍 Search keywords or content..." />
