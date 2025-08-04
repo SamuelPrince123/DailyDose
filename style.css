@@ -136,6 +136,82 @@ header.header {
     outline: none;
   }
 
+/*── About Button ──*/
+.header-controls {
+  display: flex;
+  justify-content: center;  /* center children horizontally */
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;              /* span full header width */
+  margin-top: 0.5rem;       /* optional spacing below your title */
+}
+
+
+.about-btn {
+  background: var(--btn-bg);
+  color: #fff;
+  border: none;
+  padding: 0.5rem 0.75rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.about-btn:hover {
+  background: var(--btn-hover);
+}
+
+/*── Modal Overlay ──*/
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  z-index: 1000;
+}
+
+.modal.open {
+  display: flex;
+}
+
+/*── Modal Content ──*/
+.modal-content {
+  background: var(--card-bg);
+  color: var(--text-color);
+  max-width: 500px;
+  width: 100%;
+  padding: 1.5rem;
+  border-radius: 16px;
+  position: relative;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+  animation: fadeInUp 0.4s ease-in-out;
+}
+
+/*── Close Button ──*/
+.close-btn {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.75rem;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  line-height: 1;
+  color: var(--text-color);
+  cursor: pointer;
+}
+
+
+
+
+
+
 button {
   padding: 0.5rem 1rem;
   border: none;
