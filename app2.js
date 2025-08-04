@@ -22,7 +22,7 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
-const CACHE_TTL = 24 * 60 * 60 * 1000; // 24 hours
+const CACHE_TTL = 24 * 60 * 60 * 10000; // 24 hours
 
 window.addEventListener("DOMContentLoaded", loadDailyData);
 
@@ -69,18 +69,10 @@ async function loadDailyData() {
       freshData = await fetchDailyDataFromApis();
       freshData.lastFetch = now;
 
-      // **Only** generate photo if none exists already:
-      if (data.photoUrl) {
-        console.log(
-          "📸 Preserving existing photoUrl from cache:",
-          data.photoUrl
-        );
-        freshData.photoUrl = data.photoUrl;
-      } else {
-        console.log("📸 No photoUrl in cache, generating new one");
-        const photoSection = await fetchPhotoOfTheDay();
-        Object.assign(freshData, photoSection);
-      }
+      // 📸 Always generate a new Photo of the Day on a fresh fetch
+      console.log("📸 Generating new photoUrl for the new day");
+      const photoSection = await fetchPhotoOfTheDay();
+      Object.assign(freshData, photoSection);
 
       await set(dbRef, freshData);
       console.log("✅ Saved new data to Firebase");
@@ -309,7 +301,7 @@ function displayData(data) {
     console.warn("⚠️ No photoUrl found in data:", data);
   }
 
-  // Other sections...
+  // Other sections…
   document.getElementById("quoteText").textContent = data.quote || "—";
   document.getElementById("jokeText").textContent = data.joke || "—";
   document.getElementById("wordText").textContent = data.word || "—";
